@@ -12,8 +12,6 @@ Useful for AJATT language learning and immersion content.
 ---
 Get random snapshot image from any video content after running snapsoup (or any directory with .jpgs)
 
-use flag `-a` and copy paste the export command to add current directory to list of directories.
-
 
 **snapsoup**
 ---
