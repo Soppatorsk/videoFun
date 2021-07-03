@@ -4,10 +4,14 @@ FILETYPE=mkv
 DIR=./snapsoup
 mkdir $DIR
 rm -rf $DIR/*
-while getopts ":f:" opt; do
+while getopts ":f:t" opt; do
   case $opt in
     f)
       FILETYPE=$OPTARG >&2
+      ;;
+    t)
+      echo $PWD
+      exit 1
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
