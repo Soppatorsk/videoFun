@@ -1,12 +1,13 @@
 #!/bin/bash
-dirList=/tmp/rndimgDir.txt
-imgList=/tmp/rndimg.txt
+dirList=/tmp/rndimgDirs.txt
+imgList=/tmp/rndimgImgs.txt
 VIDEOFILES=/mnt/e/Video #your full path to where you keep your videos
-DIR=`pwd -P`
 
-IMG=`cat $imgList | sort -R | head -n 1`
+rndimg=/tmp/rndimg.txt
 
-while getopts ":l:csw" opt; 
+cat $imgList | sort -R | head -n 1 > $rndimg
+
+while getopts ":l:cosw" opt; 
 do
   case $opt in
   	l) #loop for i
@@ -17,9 +18,8 @@ do
 		if [ $i -gt $OPTARG ]
 			then break;
 		fi
-		echo "$line"
+		echo "$line" >> $rndimg
 	done
-	exit 1
 	;;
   	c) #only current snapsoup
 	echo `ls snapsoup/*.jpg | sort -R | head -n 1`
@@ -39,6 +39,12 @@ do
      cat $dirList
      exit 1
       ;;
+    o)
+	cat $rndimg | while read -r line
+	do
+		xdg-open "$line"
+	done
+	;;
     w) #win path, not universal.
 	echo $IMG | sed 's/\/mnt\/e/E:/'
 	exit 1
@@ -54,6 +60,7 @@ do
   esac
 done
 
-echo "$IMG"
+cat $rndimg
 #xdg-open "$IMG"
+rm $rndimg
 
