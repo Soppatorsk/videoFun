@@ -11,7 +11,9 @@ Useful for AJATT language learning and immersion content.
 **rndimg**
 ---
 Get random snapshot image from any video content after running snapsoup
+`-l <n>` get n random pictures.
 
+`-c ` only generate from current snapsoup directory
 
 **snapsoup**
 ---
