@@ -12,11 +12,15 @@ Useful for AJATT language learning and immersion content.
 ---
 Get random snapshot image from any video content after running snapsoup
 
+`-s` search for snapsoup directories (do this first)
+
+
 `-l <n>` get n random pictures.
 
 `-c` only generate from current snapsoup directory
 
-`-s` search for snapsoup directories
+`-o` open images with xdg-open
+
 
 **snapsoup**
 ---
