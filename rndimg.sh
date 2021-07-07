@@ -4,14 +4,14 @@ imgList=/tmp/rndimgImgs.txt
 VIDEOFILES=/mnt/e/Video #your full path to where you keep your videos
 
 rndimg=/tmp/rndimg.txt
-
+rm $rndimg 2>/dev/null
 cat $imgList | sort -R | head -n 1 > $rndimg
 
-while getopts ":l:cosw" opt; 
+while getopts ":l:cnosw" opt; 
 do
   case $opt in
   	l) #loop for i
-	i=0
+	i=1
 	cat $imgList | sort -R | while read -r line
 	do 
 		let i=i+1
@@ -21,13 +21,17 @@ do
 		echo "$line" >> $rndimg
 	done
 	;;
-  	c) #only current snapsoup
-	echo `ls snapsoup/*.jpg | sort -R | head -n 1`
-    exit 1
+  	c) #only current snapsoup, not compatible with l
+	rm $rndimg
+	echo `ls snapsoup/*.jpg | sort -R | head -n 1` >> $rndimg 
 	;;
+  n) #nice readable output
+  cat --number $rndimg | sed 's/\/mnt\/e\/Video\/Anime\/Series\///' | sed 's/\/mnt\/e\/Video\/Anime\/Movies\///' | sed 's/\/snapsoup\//\t/'
+  exit 1
+  ;;
     s) #scan
-	 rm $imgList
-	 rm $dirList
+	 rm $imgList 2>/dev/null
+	 rm $dirList 2>/dev/null
      find $VIDEOFILES -name snapsoup 2>/dev/null | while read -r rndDir
      do
      	echo "$rndDir" >> $dirList
@@ -46,7 +50,7 @@ do
 	done
 	;;
     w) #win path, not universal.
-	echo $IMG | sed 's/\/mnt\/e/E:/'
+	cat $rndimg | sed 's/\/mnt\/e/E:/'
 	exit 1
 	;;
     \?)
@@ -60,7 +64,7 @@ do
   esac
 done
 
-cat $rndimg
+cat "$rndimg"
 #xdg-open "$IMG"
 rm $rndimg
 

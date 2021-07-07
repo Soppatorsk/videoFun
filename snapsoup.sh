@@ -30,3 +30,4 @@ do
 	ffmpeg -i "$FILE" -r 0.1 "$DIR"/"$C"%04d.jpg
 done
 #skip intro outro?
+rndimg -s 1>/dev/null
