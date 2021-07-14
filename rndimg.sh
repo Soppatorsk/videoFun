@@ -5,9 +5,9 @@ VIDEOFILES=/mnt/e/Video #your full path to where you keep your videos
 
 rndimg=/tmp/rndimg.txt
 rm $rndimg 2>/dev/null
-cat $imgList | sort -R | head -n 1 > $rndimg
+cat $imgList 2>/dev/null | sort -R | head -n 1 > $rndimg
 
-while getopts ":l:cnosw" opt; 
+while getopts ":l:s:cnowq" opt; 
 do
   case $opt in
   	l) #loop for i
@@ -30,9 +30,10 @@ do
   exit 1
   ;;
     s) #scan
+	echo "$OPTARG"
 	 rm $imgList 2>/dev/null
 	 rm $dirList 2>/dev/null
-     find $VIDEOFILES -name snapsoup 2>/dev/null | while read -r rndDir
+     find "$OPTARG" -name snapsoup 2>/dev/null | while read -r rndDir
      do
      	echo "$rndDir" >> $dirList
      	for FILE in "$rndDir"/*.jpg
@@ -53,6 +54,9 @@ do
 	cat $rndimg | sed 's/\/mnt\/e/E:/'
 	exit 1
 	;;
+	q)
+		exit 1
+		;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
       exit 1
@@ -65,6 +69,4 @@ do
 done
 
 cat "$rndimg"
-#xdg-open "$IMG"
-rm $rndimg
-
+#rm $rndimg
