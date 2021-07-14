@@ -12,7 +12,7 @@ Useful for AJATT language learning and immersion content.
 ---
 Get random snapshot image from any video content after running snapsoup
 
-`-s <full path>` search for snapsoup directories (do this first)
+`-s <full path> manual scan for snapsoup directories 
 
 `-l <n>` get n random pictures.
 
@@ -25,6 +25,7 @@ Get random snapshot image from any video content after running snapsoup
 ---
 Generate snapshots of all video files in current directory
 
+Will create new directory ./snapsoup containing your images, adds it to rndimg list upon completion
 
 **subfix**
 ---
