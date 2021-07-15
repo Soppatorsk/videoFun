@@ -19,6 +19,7 @@ do
 			then break;
 		fi
 		echo "$line" >> $rndimg
+		cat $rndimg > test.txt
 	done
 	;;
   	c) #only current snapsoup, not compatible with l
@@ -30,7 +31,6 @@ do
   exit 1
   ;;
     s) #scan
-	echo "$OPTARG"
 	 rm $imgList 2>/dev/null
 	 rm $dirList 2>/dev/null
      find "$OPTARG" -name snapsoup 2>/dev/null | while read -r rndDir
@@ -50,9 +50,9 @@ do
 		xdg-open "$line"
 	done
 	;;
-    w) #win path, not universal.
+    w) #win path, personal
 	cat $rndimg | sed 's/\/mnt\/e/E:/'
-	exit 1
+	exit 1;
 	;;
 	q)
 		exit 1
