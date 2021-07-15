@@ -19,7 +19,6 @@ do
 			then break;
 		fi
 		echo "$line" >> $rndimg
-		cat $rndimg > test.txt
 	done
 	;;
   	c) #only current snapsoup, not compatible with l
