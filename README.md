@@ -5,7 +5,7 @@ A collection of various simple bash scripts using [ffmpeg](https://ffmpeg.org/) 
 ---
 Convert and concatenate video files in current directory into one .mp3 file.
 
-Useful for AJATT language learning and immersion content. 
+Useful for AJATT language learning immersion content. 
 
 
 **rndimg**
@@ -29,8 +29,8 @@ Will create new directory ./snapsoup containing your images, adds it to rndimg l
 
 **subfix**
 ---
-renames subtitle files in directory 'subs' to match video files for media player auto-detection
+renames subtitle files in directory `./subs` to match video files for media player auto-detection
 
 `-f <filetype>` to specify video filetype. (default: mkv) 
 
-`-o <offset>` for when missing n number of episodes (If you dont keep all 200+500 episodes of naruto on your drive at once, ex.)
+`-o <offset>` to skip first `<offset>` number of episodes
