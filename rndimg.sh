@@ -1,61 +1,30 @@
 #!/bin/bash
-dirList=/tmp/rndimgDirs.txt
-imgList=/tmp/rndimgImgs.txt
-VIDEOFILES=/mnt/e/Video #your full path to where you keep your videos
 
-rndimg=/tmp/rndimg.txt
-rm $rndimg 2>/dev/null
-cat $imgList 2>/dev/null | sort -R | head -n 1 > $rndimg
+VIDEOFILES=/mnt/e/Video 			#your full path to where you keep your videos, unused
+GDIR=`cat /tmp/snapsoup/gdir` #get user specified snapsoup folder
+imgList=/tmp/rndimgImgs.txt 	#the full list of images
+rndimg=/tmp/rndimg.txt				#the current run output
 
-while getopts ":l:s:cnowq" opt; 
+ITERATE=1
+NAME=""
+PRETTY=""
+ONLYOUT=""
+
+while getopts ":n:i:po" opt
 do
   case $opt in
-  	l) #loop for i
-	i=1
-	cat $imgList | sort -R | while read -r line
-	do 
-		let i=i+1
-		if [ $i -gt $OPTARG ]
-			then break;
-		fi
-		echo "$line" >> $rndimg
-	done
-	;;
-  	c) #only current snapsoup, not compatible with l
-	rm $rndimg
-	echo `ls snapsoup/*.jpg | sort -R | head -n 1` >> $rndimg 
-	;;
-  n) #nice readable output
-  cat --number $rndimg | sed 's/\/mnt\/e\/Video\/Anime\/Series\///' | sed 's/\/mnt\/e\/Video\/Anime\/Movies\///' | sed 's/\/snapsoup\//\t/'
-  exit 1
-  ;;
-    s) #scan
-	 rm $imgList 2>/dev/null
-	 rm $dirList 2>/dev/null
-     find "$OPTARG" -name snapsoup 2>/dev/null | while read -r rndDir
-     do
-     	echo "$rndDir" >> $dirList
-     	for FILE in "$rndDir"/*.jpg
-     		do
-     			echo "$FILE" >> $imgList
-     		done
-     done
-     cat $dirList
-     exit 1
-      ;;
-    o)
-	cat $rndimg | while read -r line
-	do
-		xdg-open "$line"
-	done
-	;;
-    w) #win path, personal
-	cat $rndimg | sed 's/\/mnt\/e/E:/'
-	exit 1;
-	;;
-	q)
-		exit 1
-		;;
+  	n)
+			NAME=$OPTARG
+			;;
+		i)
+			ITERATE=$OPTARG
+			;;
+		p)
+			PRETTY=true
+			;;
+		o)
+			ONLYOUT=true
+			;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
       exit 1
@@ -67,5 +36,33 @@ do
   esac
 done
 
+if [ "$GDIR" = "" ] 
+then
+	echo "snapsoup directory not set, have you generated any snapshots?"
+	echo "set directory with snapsoup -d </full/path/to/dir>"
+	exit
+fi
+
+ls -v "$GDIR"/*.jpg > "$imgList" 	#get full list, abundant?
+
+printf "" > $rndimg 2>/dev/null 	#clean prev run
+
+cat $imgList | grep "$NAME" --color=never | sort -R | while read -r line
+do 
+	let i=i+1
+	if [ $i -gt $ITERATE ]
+		then break;
+	fi
+	echo "$line" >> $rndimg
+	if [ "$ONLYOUT" = "" ]
+	then
+		xdg-open "$line"
+	fi
+done
+
+if [ $PRETTY ]
+then
+	cat "$rndimg" | sed "s|$GDIR\/||" | tr _  " " | sed 's/.\{9\}$//' | tr '-' " "
+else
 cat "$rndimg"
-#rm $rndimg
+fi
