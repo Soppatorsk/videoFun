@@ -1,12 +1,25 @@
 C=0
-FILETYPE=mkv
-mkdir tmp
 
-while getopts ":f:h" opt; do
+G='\033[1;32m'
+B='\033[1;34m'
+N='\033[0m' #none
+
+FILETYPE=mkv
+TMPDIR=/tmp/audioCat
+OUTDIR=/mnt/e/Audio
+NAME="finalaudio"
+mkdir $TMPDIR 2>/dev/null
+while getopts ":f:n:o:h" opt; do
   case $opt in
     f)
       FILETYPE=$OPTARG >&2
       ;;
+    n)
+NAME=$OPTARG
+;;
+o)
+OUTDIR=$OPTARG
+;;
     h)
       echo "audioCat by https://github.com/Soppatorsk/audioCat"
       echo "-f <video_filetype> default: mkv" >&2
@@ -23,13 +36,14 @@ while getopts ":f:h" opt; do
   esac
 done
 
-for FILE in *.$FILETYPE
+for FILE in *.$FILETYPE #does this really get the right order?
 do
         let C=C+1
-        ffmpeg -i "$FILE" tmp/$C.wav
+        ffmpeg -loglevel quiet -i "$FILE" $TMPDIR/$C.wav
 done
-sox $(ls -v tmp/*.wav) tmp/finalaudio.wav
-ffmpeg -i tmp/finalaudio.wav finalAudio.mp3
-rm -rf tmp
+sox $(ls -v $TMPDIR/*.wav) $TMPDIR/finalaudio.wav
+ffmpeg -loglevel quiet -i $TMPDIR/finalaudio.wav $OUTDIR/"$NAME.mp3"
 
-#Takes mkv files in current directory and converts and concatinates them into a single .mp3 file
+printf "\n${B}$NAME${N} is Done! \n"
+
+rm -rf $TMPDIR/*
