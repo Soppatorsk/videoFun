@@ -26,7 +26,7 @@ Get random snapshot image from any video content after running snapsoup
 Generate snapshots of all video files in current directory
 
 specify directory for snapshots with `snapsoup -d <full/path/to/dir>`
-	
+
 
 **subfix**
 ---

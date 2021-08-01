@@ -9,8 +9,9 @@ ITERATE=1
 NAME=""
 PRETTY=""
 ONLYOUT=""
+WSLPATH=""
 
-while getopts ":n:i:po" opt
+while getopts ":n:i:pow" opt
 do
   case $opt in
   	n)
@@ -24,6 +25,9 @@ do
 			;;
 		o)
 			ONLYOUT=true
+			;;
+		w)
+			WSLPATH=true
 			;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -54,15 +58,29 @@ do
 		then break;
 	fi
 	echo "$line" >> $rndimg
-	if [ "$ONLYOUT" = "" ]
-	then
-		xdg-open "$line"
-	fi
 done
+
+if [ "$ONLYOUT" = "" ]
+then
+	cat $rndimg | while read -r line
+	do
+		xdg-open "$line"
+	done
+fi
+
+if [ $WSLPATH ]
+then
+	cat $rndimg | while read -r line
+	do
+		wslpath -w "$line"
+	done
+	exit
+fi
 
 if [ $PRETTY ]
 then
 	cat "$rndimg" | sed "s|$GDIR\/||" | tr _  " " | sed 's/.\{9\}$//' | tr '-' " "
-else
-cat "$rndimg"
+	exit
 fi
+
+cat "$rndimg"
