@@ -25,7 +25,14 @@ Get random snapshot image from any video content after running snapsoup
 ---
 Generate snapshots of all video files in current directory
 
+Usage: `snapsoup -n <name of show>`
+
+`-f <filetype> (default: mkv)`
+
+`-e` enable episode number in filenames
+
 specify directory for snapshots with `snapsoup -d <full/path/to/dir>`
+
 
 
 **subfix**
