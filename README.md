@@ -7,6 +7,11 @@ Convert and concatenate video files in current directory into one .mp3 file.
 
 Useful for AJATT language learning immersion content. 
 
+`-o <file out directory>`
+
+`-n <name>`
+
+`-f <filetype>`
 
 **rndimg**
 ---
