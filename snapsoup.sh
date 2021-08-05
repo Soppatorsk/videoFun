@@ -10,9 +10,8 @@ C=0
 SSTMP=/tmp/snapsoup
 GDIRPATH=$SSTMP/gdir
 GDIR=`cat $GDIRPATH 2>/dev/null`
-FILETYPE=".mkv"
+FILETYPE="mkv"
 NAME=""
-EPISODES=""
 
 mkdir $SSTMP 2>/dev/null && chmod 777 $SSTMP 2>/dev/null 
 
@@ -53,15 +52,15 @@ else
 		echo "snapsoup directory not set! use -d <full path> to specify where you want to store your pictures."  
 fi 2>/dev/null
 
-for FILE in *".$FILETYPE";
+for FILE in *.$FILETYPE;
 	do
 	 	let C=C+1
 	 	echo "Generating episode $C..."
 	 	#echo "$FILE" -r 0.1 "$GDIR"/"$NAME""-""E`printf %03d $C`""-"%04d.jpg
-	 	if [ EPISODES == "TRUE" ]; then
-		ffmpeg -loglevel quiet -i "$FILE" -r 0.05 "$GDIR"/"$NAME""-""E`printf %03d $C`""-"%04d.jpg 
+	 	if [ $EPISODES ]; then
+		ffmpeg -loglevel quiet -i "$FILE" -r 0.05 "$GDIR"/"$NAME"" ""E`printf %03d $C`"" "%04d.jpg 
 	 	else 
-		ffmpeg -loglevel quiet -i "$FILE" -r 0.05 "$GDIR"/"$NAME""-"%04d.jpg 
+		ffmpeg -loglevel quiet -i "$FILE" -r 0.05 "$GDIR"/"$NAME"" "%04d.jpg 
 	fi
 
 	 		
