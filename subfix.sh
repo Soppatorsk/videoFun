@@ -1,15 +1,19 @@
 #!/bin/bash
 TMPD=/tmp/subfix
 FILETYPE=mkv
+SUBFILETYPE=srt
 C=0
 mkdir $TMPD
 SUBLIST=$TMPD/subs.txt
 
-while getopts ":f:o:h" opt; do
+while getopts ":f:o:ha" opt; do
   case $opt in
     o)
 	C=$OPTARG >&2
 	;;
+    a)
+     SUBFILETYPE=ass 
+      ;;
     f)
       FILETYPE=$OPTARG >&2
       ;;
@@ -30,11 +34,14 @@ while getopts ":f:o:h" opt; do
   esac
 done
 
-ls -v subs/*.srt > $SUBLIST
+ls -v subs/*.$SUBFILETYPE > $SUBLIST
 sed -e '1,'$C'd' $SUBLIST
 ls -v *.$FILETYPE | sed 's/.'$FILETYPE'//' | while IFS= read -r line
 do
   let C=C+1
-  mv "$(sed ''$C'q;d' $SUBLIST)" subs/"$line".srt
+  mv "$(sed ''$C'q;d' $SUBLIST)" subs/"$line".$SUBFILETYPE
 done
 rm -rf /tmp/subfix
+
+
+#TODO SRT SUPPORT
