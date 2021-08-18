@@ -48,4 +48,3 @@ renames subtitle files in directory `./subs` to match video files for media play
 
 `-o <offset>` to skip first `<offset>` number of episodes
 
-test
