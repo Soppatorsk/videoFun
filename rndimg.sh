@@ -47,7 +47,7 @@ then
 	exit
 fi
 
-ls -v "$GDIR"/*.jpg > "$imgList" 	#get full list, abundant?
+#ls -v "$GDIR"/*.jpg > "$imgList" 	#get full list, abundant? SLOW!
 
 printf "" > $rndimg 2>/dev/null 	#clean prev run
 

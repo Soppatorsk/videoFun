@@ -11,7 +11,7 @@ SSTMP=/tmp/snapsoup
 GDIRPATH=$SSTMP/gdir
 GDIR=`cat $GDIRPATH 2>/dev/null`
 FILETYPE="mkv"
-NAME=""
+NAME="$(basename "$PWD")"
 
 mkdir $SSTMP 2>/dev/null && chmod 777 $SSTMP 2>/dev/null 
 
@@ -27,11 +27,8 @@ while getopts ":d:f:n:e" opt; do
 	;;
 	n)
 NAME=$OPTARG
-if [ NAME == "" ]; then
-	echo "Must specify name with -n <name>"
-	exit 1
-fi
 ;;
+
 e)
 EPISODES="TRUE"
 ;;
@@ -62,10 +59,9 @@ for FILE in *.$FILETYPE;
 	 	else 
 		ffmpeg -loglevel quiet -i "$FILE" -r 0.05 "$GDIR"/"$NAME"" "%04d.jpg 
 	fi
-
-	 		
 	done
-printf "\n${B}$NAME${N} is Done! \n"
+	find $GDIR -name "*.jpg" -type 'f' -size -15k -delete
+printf "\n${B}"$NAME"${N} is Done! \n"
 printf "Find your snapshots at: ${G}$GDIR${N}\n"
 
 #anime OP skip
@@ -73,6 +69,6 @@ printf "Find your snapshots at: ${G}$GDIR${N}\n"
 #set directory/set and move to directory
 #find right filetype, nested if mkv->avi->mp4->...
 #get name from directory
-
+#auto remove low filesize imgs (black screens)
 
 
