@@ -5,20 +5,27 @@ GDIR=`cat /tmp/snapsoup/gdir` #get user specified snapsoup folder
 imgList=/tmp/rndimgImgs.txt 	#the full list of images
 rndimg=/tmp/rndimg.txt				#the current run output
 
+i=0
 ITERATE=1
 NAME=""
+
 PRETTY=""
 ONLYOUT=""
+CAT=""
 WSLPATH=""
 
-while getopts ":n:i:pow" opt
+while getopts ":n:i:cpouw" opt
 do
   case $opt in
+  	c)
+			CAT=true
+			;;
+  	i)
+			ITERATE=$OPTARG
+			;;
+
   	n)
 			NAME=$OPTARG
-			;;
-		i)
-			ITERATE=$OPTARG
 			;;
 		p)
 			PRETTY=true
@@ -26,6 +33,11 @@ do
 		o)
 			ONLYOUT=true
 			;;
+		u)
+			ls -v "$GDIR"/*.jpg > "$imgList" 	#update SLOW!
+			echo "update complete"
+			exit 1
+		  ;;
 		w)
 			WSLPATH=true
 			;;
@@ -47,18 +59,22 @@ then
 	exit
 fi
 
-#ls -v "$GDIR"/*.jpg > "$imgList" 	#get full list, abundant? SLOW!
-
 printf "" > $rndimg 2>/dev/null 	#clean prev run
 
-cat $imgList | grep "$NAME" --color=never | sort -R | while read -r line
-do 
-	let i=i+1
-	if [ $i -gt $ITERATE ]
-		then break;
-	fi
-	echo "$line" >> $rndimg
-done
+while [ $i -lt $ITERATE ]
+	do
+		let i=i+1
+		cat $imgList | grep "$NAME" --color=never | head -$(echo $(($RANDOM % $(cat $imgList | grep "$NAME" | wc -l) + 1))) | tail -1 >> $rndimg
+	done
+
+if [ $CAT ] #cat out for image2pipe
+then
+	cat $rndimg | while read -r line
+	do
+		cat "$line"
+	done
+	exit
+fi
 
 if [ "$ONLYOUT" = "" ]
 then
@@ -67,6 +83,7 @@ then
 		xdg-open "$line"
 	done
 fi
+
 
 if [ $WSLPATH ]
 then
