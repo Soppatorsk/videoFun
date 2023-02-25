@@ -34,7 +34,7 @@ do
 			ONLYOUT=true
 			;;
 		u)
-			ls -v "$GDIR"/*.jpg > "$imgList" 	#update SLOW!
+			ls -v "$GDIR" | grep jpg > "$imgList" 	#update SLOW!
 			echo "update complete"
 			exit 1
 		  ;;
@@ -80,7 +80,7 @@ if [ "$ONLYOUT" = "" ]
 then
 	cat $rndimg | while read -r line
 	do
-		xdg-open "$line"
+		xdg-open "$GDIR"/"$line"
 	done
 fi
 
